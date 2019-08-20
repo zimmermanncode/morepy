@@ -31,6 +31,8 @@ def dev(shell, args):
     format string ``{file}:{line}``, which can be customized using the
     ``--format`` option
 
+    The subprocess is started with ``shell=True``
+
     If no line number can be determined for the given ``object``, then the
     format string is ignored, and only the file path is used
     """
@@ -80,4 +82,4 @@ def dev(shell, args):
     editor_arg = Path(filename).realpath()
     if lineno:
         editor_arg = editor_arg_format.format(file=editor_arg, line=lineno)
-    return call(editor.split() + [editor_arg])
+    return call('{} "{}"'.format(editor, editor_arg), shell=True)
