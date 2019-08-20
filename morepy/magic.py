@@ -66,11 +66,11 @@ def dev(shell, args):
                 if filename is not None:
                     break
 
-                else:
-                    raise TypeError(
-                        "Can't find any source file for given object, its "
-                        "class, or base classes: {!r}"
-                        .format(exceptions))
+            else:
+                raise TypeError(
+                    "Can't find any source file for given object, its "
+                    "class, or base classes: {!r}"
+                    .format(exceptions))
 
     try:
         lineno = getsourcelines(obj)[1]
