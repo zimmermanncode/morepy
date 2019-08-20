@@ -27,14 +27,20 @@ def dev(shell, args):
     And jump to the location of its definition
 
     By taking the command from the ``--editor`` option or from the ``EDITOR``
-    environment variable, and running it with an argument of the format
-    ``filepath:lineno``
+    environment variable, and running it with an argument created from the
+    format string ``{file}:{line}``, which can be customized using the
+    ``--format`` option
+
+    If no line number can be determined for the given ``object``, then the
+    format string is ignored, and only the file path is used
     """
     editor = args.editor or os.environ.get('EDITOR')
     if not editor:
         raise RuntimeError("No EDITOR environment variable defined")
 
+    editor_arg_format = args.format or "{file}:{line}"
     obj = eval(args.object, shell.user_ns)
+
     exceptions = []
     try:
         filename = getsourcefile(obj)
@@ -73,5 +79,5 @@ def dev(shell, args):
 
     editor_arg = Path(filename).realpath()
     if lineno:
-        editor_arg += ":{}".format(lineno)
+        editor_arg = editor_arg_format.format(file=editor_arg, line=lineno)
     return call(editor.split() + [editor_arg])
