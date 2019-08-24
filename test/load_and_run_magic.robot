@@ -21,7 +21,7 @@ Run %dev w/o flags
    ...   %dev dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().rstrip('c'))
+   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
    ...   modules=re, path, morepy
 
    Should Match Regexp   ${output}
@@ -36,7 +36,7 @@ Run %dev --editor
    ...   %dev --editor echo dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().rstrip('c'))
+   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
    ...   modules=re, path, morepy
 
    Should Match Regexp   ${output}
@@ -55,7 +55,7 @@ Run %dev --format
    ...   %dev --format FILE:{file}:LINE:{line} dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().rstrip('c'))
+   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
    ...   modules=re, path, morepy
 
    Should Match Regexp   ${output}
@@ -70,7 +70,7 @@ Run %dev --editor --format
    ...   %dev --editor echo --format FILE:{file}:LINE:{line} dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().rstrip('c'))
+   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
    ...   modules=re, path, morepy
 
    Should Match Regexp   ${output}
