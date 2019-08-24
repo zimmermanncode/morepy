@@ -5,6 +5,8 @@ Library   String
 
 Resource   ./ipython.robot
 
+Suite Setup   Evaluate   sys.path.remove("")   modules=sys
+
 
 *** Test Cases ***
 
