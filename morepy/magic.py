@@ -79,7 +79,9 @@ def dev(shell, args):
     except TypeError:
         lineno = 0
 
-    editor_arg = Path(filename).realpath()
+    editor_arg = (
+        Path(filename)  # pylint: disable=no-value-for-parameter
+        .realpath().normcase())
     if lineno:
         editor_arg = editor_arg_format.format(file=editor_arg, line=lineno)
     return call('{} "{}"'.format(editor, editor_arg), shell=True)
