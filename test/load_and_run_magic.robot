@@ -5,7 +5,8 @@ Library   String
 
 Resource   ./ipython.robot
 
-Suite Setup   Evaluate   if "" in sys.path: sys.path.remove("")   modules=sys
+Suite Setup   Run Keyword If   "" in sys.path
+...   Evaluate   sys.path.remove("")   modules=sys
 
 
 *** Test Cases ***
@@ -23,11 +24,13 @@ Run %dev w/o flags
    ...   %dev dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
-   ...   modules=re, path, morepy
+   ...   path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c')
+   ...   modules=path, morepy
+   ${source file regexp} =   Evaluate   re.escape("${source file}")
+   ...   modules=re
 
    Should Match Regexp   ${output}
-   ...   ^ARG: ${source file}:17
+   ...   ^ARG: ${source file regexp}:17
 
 Run %dev --editor
    ${result}   ${output} =   Run IPython Process
@@ -38,11 +41,13 @@ Run %dev --editor
    ...   %dev --editor echo dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
-   ...   modules=re, path, morepy
+   ...   path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c')
+   ...   modules=path, morepy
+   ${source file regexp} =   Evaluate   re.escape("${source file}")
+   ...   modules=re
 
    Should Match Regexp   ${output}
-   ...   ^"?${source file}:17"?
+   ...   ^"?${source file regexp}:17"?
 
 Run %dev --format
    ${python} =   Evaluate   sys.executable   modules=sys
@@ -57,11 +62,13 @@ Run %dev --format
    ...   %dev --format FILE:{file}:LINE:{line} dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
-   ...   modules=re, path, morepy
+   ...   path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c')
+   ...   modules=path, morepy
+   ${source file regexp} =   Evaluate   re.escape("${source file}")
+   ...   modules=re
 
    Should Match Regexp   ${output}
-   ...   ^ARG: FILE:${source file}:LINE:17
+   ...   ^ARG: FILE:${source file regexp}:LINE:17
 
 Run %dev --editor --format
    ${result}   ${output} =   Run IPython Process
@@ -72,8 +79,10 @@ Run %dev --editor --format
    ...   %dev --editor echo --format FILE:{file}:LINE:{line} dev.__func__
 
    ${source file} =   Evaluate
-   ...   re.escape(path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c'))
-   ...   modules=re, path, morepy
+   ...   path.Path(morepy.magic.__file__).realpath().normcase().rstrip('c')
+   ...   modules=path, morepy
+   ${source file regexp} =   Evaluate   re.escape("${source file}")
+   ...   modules=re
 
    Should Match Regexp   ${output}
-   ...   ^"?FILE:${source file}:LINE:17"?
+   ...   ^"?FILE:${source file regexp}:LINE:17"?
